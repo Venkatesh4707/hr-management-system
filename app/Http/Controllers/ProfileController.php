@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
 {
@@ -39,5 +41,27 @@ class ProfileController extends Controller
 
         return Redirect::route('profile.edit');
     }
+    public function destroy(Request $request): RedirectResponse
+    {
+        if (!Auth::attempt([
+             'email' => $request->user()->email,
+            'password' => $request->password,
+        ])) {
 
+        throw ValidationException::withMessages([
+            'password' => __('auth.password'),
+        ]);
+        }
+
+        $user = $request->user();
+
+        Auth::logout();
+
+        $user->delete();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return Redirect::to('/');
+    }
 }

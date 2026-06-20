@@ -5,7 +5,9 @@ namespace Database\Factories;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-
+use App\Models\Branch;
+use App\Models\Department;
+use Illuminate\Support\Facades\Hash;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory\App\Models\Employee>
  */
@@ -26,10 +28,10 @@ class EmployeeFactory extends Factory
             'address' => fake()->address(),
             'bank_acc_no' => fake()->iban(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$R3ByxXtWwnuJfmTmPf.LfOxt2h5xDF2GmdCuoRJDOgMqVWZwkOGjK', // SoftKittyWarmKittyLittleBallOfFurr
+            'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
-            'department_id' => fake()->numberBetween(1, 4),
-            'branch_id' => fake()->numberBetween(1, 2),
+            'department_id' => Department::factory(),
+            'branch_id' => Branch::factory(),
             'hired_on' => Carbon::createFromTimestamp(mt_rand(Carbon::now()->subYears(3)->timestamp, Carbon::now()->timestamp))->format('Y-m-d'),
             'is_remote' => false,
         ];

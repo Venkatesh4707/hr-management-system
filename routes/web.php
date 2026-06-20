@@ -51,10 +51,11 @@ Route::group(['middleware' => ['role:admin', 'auth']], function () {
 
 // Logged
 Route::group(['middleware' => ['auth']], function () {
-
+    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+    ->name('profile.destroy');
     Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::get('my-profile', [\App\Http\Controllers\EmployeeController::class, 'showMyProfile'])->name('my-profile');
