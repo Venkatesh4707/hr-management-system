@@ -44,7 +44,7 @@ jobs:
           node-version: '20'
 
       - name: Install Node Packages
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Copy Environment
         run: cp .env.example .env
